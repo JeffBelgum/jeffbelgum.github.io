@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/registry/src/github.com-1ecc6299db9ec823/num-0.1.12/src/integer.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/git/checkouts/num-562c9ea1486aecc2/master/src/integer.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>integer.rs.html -- source</title>
@@ -567,7 +567,7 @@
 <span class='kw'>use</span> {<span class='ident'>Num</span>, <span class='ident'>Signed</span>};
 
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Integer</span>: <span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>Num</span> <span class='op'>+</span> <span class='ident'>PartialOrd</span>
-                 <span class='op'>+</span> <span class='ident'>Div</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>Output</span> <span class='op'>=</span> <span class='ident'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Rem</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>Output</span> <span class='op'>=</span> <span class='ident'>Self</span><span class='op'>&gt;</span> {
+                 <span class='op'>+</span> <span class='ident'>Div</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>Output</span> <span class='op'>=</span> <span class='kw'>Self</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Rem</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>Output</span> <span class='op'>=</span> <span class='kw'>Self</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Floored integer division.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Examples</span>
@@ -584,7 +584,7 @@
     <span class='doccomment'>/// assert!((-1i).div_floor(&amp; 2) == -1);</span>
     <span class='doccomment'>/// assert!((-1i).div_floor(&amp;-2) ==  0);</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>div_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>;
+    <span class='kw'>fn</span> <span class='ident'>div_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
 
     <span class='doccomment'>/// Floored integer modulo, satisfying:</span>
     <span class='doccomment'>///</span>
@@ -608,7 +608,7 @@
     <span class='doccomment'>/// assert!((-1i).mod_floor(&amp; 2) ==  1);</span>
     <span class='doccomment'>/// assert!((-1i).mod_floor(&amp;-2) == -1);</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>mod_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>;
+    <span class='kw'>fn</span> <span class='ident'>mod_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
 
     <span class='doccomment'>/// Greatest Common Divisor (GCD).</span>
     <span class='doccomment'>///</span>
@@ -619,7 +619,7 @@
     <span class='doccomment'>/// assert_eq!(6i.gcd(&amp;8), 2);</span>
     <span class='doccomment'>/// assert_eq!(7i.gcd(&amp;3), 1);</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>gcd</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>;
+    <span class='kw'>fn</span> <span class='ident'>gcd</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
 
     <span class='doccomment'>/// Lowest Common Multiple (LCM).</span>
     <span class='doccomment'>///</span>
@@ -630,11 +630,11 @@
     <span class='doccomment'>/// assert_eq!(7i.lcm(&amp;3), 21);</span>
     <span class='doccomment'>/// assert_eq!(2i.lcm(&amp;4), 4);</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>lcm</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>;
+    <span class='kw'>fn</span> <span class='ident'>lcm</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>;
 
     <span class='doccomment'>/// Deprecated, use `is_multiple_of` instead.</span>
     <span class='attribute'>#[<span class='ident'>deprecated</span> <span class='op'>=</span> <span class='string'>&quot;function renamed to `is_multiple_of`&quot;</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>divides</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>;
+    <span class='kw'>fn</span> <span class='ident'>divides</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>;
 
     <span class='doccomment'>/// Returns `true` if `other` is a multiple of `self`.</span>
     <span class='doccomment'>///</span>
@@ -645,7 +645,7 @@
     <span class='doccomment'>/// assert_eq!(9i.is_multiple_of(&amp;3), true);</span>
     <span class='doccomment'>/// assert_eq!(3i.is_multiple_of(&amp;9), false);</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>is_multiple_of</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>;
+    <span class='kw'>fn</span> <span class='ident'>is_multiple_of</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>;
 
     <span class='doccomment'>/// Returns `true` if the number is even.</span>
     <span class='doccomment'>///</span>
@@ -687,7 +687,7 @@
     <span class='doccomment'>/// assert_eq!((-1i).div_rem(&amp;-2), ( 0, -1));</span>
     <span class='doccomment'>/// ~~~</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>div_rem</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> (<span class='ident'>Self</span>, <span class='ident'>Self</span>);
+    <span class='kw'>fn</span> <span class='ident'>div_rem</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> (<span class='kw'>Self</span>, <span class='kw'>Self</span>);
 
     <span class='doccomment'>/// Simultaneous floored integer division and modulus.</span>
     <span class='doccomment'>/// Returns `(quotient, remainder)`.</span>
@@ -706,7 +706,7 @@
     <span class='doccomment'>/// assert_eq!((-1i).div_mod_floor( &amp;2), (-1,  1));</span>
     <span class='doccomment'>/// assert_eq!((-1i).div_mod_floor(&amp;-2), ( 0, -1));</span>
     <span class='doccomment'>/// ~~~</span>
-    <span class='kw'>fn</span> <span class='ident'>div_mod_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>) <span class='op'>-&gt;</span> (<span class='ident'>Self</span>, <span class='ident'>Self</span>) {
+    <span class='kw'>fn</span> <span class='ident'>div_mod_floor</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='kw'>Self</span>) <span class='op'>-&gt;</span> (<span class='kw'>Self</span>, <span class='kw'>Self</span>) {
         (<span class='self'>self</span>.<span class='ident'>div_floor</span>(<span class='ident'>other</span>), <span class='self'>self</span>.<span class='ident'>mod_floor</span>(<span class='ident'>other</span>))
     }
 }

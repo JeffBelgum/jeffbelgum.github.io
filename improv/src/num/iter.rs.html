@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/registry/src/github.com-1ecc6299db9ec823/num-0.1.12/src/iter.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/git/checkouts/num-562c9ea1486aecc2/master/src/iter.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>iter.rs.html -- source</title>
@@ -488,7 +488,7 @@
             <span class='prelude-val'>Some</span>(<span class='ident'>a</span>) <span class='op'>=&gt;</span> {
                 <span class='kw'>let</span> <span class='ident'>sz</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>stop</span>.<span class='ident'>to_i64</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>b</span><span class='op'>|</span> <span class='ident'>b</span>.<span class='ident'>checked_sub</span>(<span class='ident'>a</span>));
                 <span class='kw'>match</span> <span class='ident'>sz</span> {
-                    <span class='prelude-val'>Some</span>(<span class='prelude-val'>Some</span>(<span class='ident'>bound</span>)) <span class='op'>=&gt;</span> <span class='ident'>bound</span>.<span class='ident'>to_uint</span>(),
+                    <span class='prelude-val'>Some</span>(<span class='prelude-val'>Some</span>(<span class='ident'>bound</span>)) <span class='op'>=&gt;</span> <span class='ident'>bound</span>.<span class='ident'>to_usize</span>(),
                     _ <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
                 }
             },
@@ -496,7 +496,7 @@
                 <span class='prelude-val'>Some</span>(<span class='ident'>a</span>) <span class='op'>=&gt;</span> {
                     <span class='kw'>let</span> <span class='ident'>sz</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>stop</span>.<span class='ident'>to_u64</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>b</span><span class='op'>|</span> <span class='ident'>b</span>.<span class='ident'>checked_sub</span>(<span class='ident'>a</span>));
                     <span class='kw'>match</span> <span class='ident'>sz</span> {
-                        <span class='prelude-val'>Some</span>(<span class='prelude-val'>Some</span>(<span class='ident'>bound</span>)) <span class='op'>=&gt;</span> <span class='ident'>bound</span>.<span class='ident'>to_uint</span>(),
+                        <span class='prelude-val'>Some</span>(<span class='prelude-val'>Some</span>(<span class='ident'>bound</span>)) <span class='op'>=&gt;</span> <span class='ident'>bound</span>.<span class='ident'>to_usize</span>(),
                         _ <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>
                     }
                 },

@@ -42,9 +42,8 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>num</a>::<wbr><a class='mod' href=''>bigint</a><wbr></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]
-            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-33' href='../../src/num/bigint.rs.html#11-3434'>[src]</a></span></h1>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-34' href='../../src/num/bigint.rs.html#11-3437'>[src]</a></span></h1>
 <div class='docblock'><p>A Big integer (signed version: <code>BigInt</code>, unsigned version: <code>BigUint</code>).</p>
 
 <p>A <code>BigUint</code> is represented as an array of <code>BigDigit</code>s.
@@ -94,24 +93,24 @@ fn main() {
 </pre>
 
 <p>It&#39;s easy to generate large random numbers:</p>
-<span class='rusttest'>extern crate num;
+<span class='rusttest'>extern crate rand;
+extern crate num;
 fn main() {
-    #![allow(unstable)]
-    use num::bigint::{ToBigInt, RandBigInt};
-    use std::rand;
-    
-    let mut rng = rand::thread_rng();
-    let a = rng.gen_bigint(1000);
-    
-    let low = -10000.to_bigint().unwrap();
-    let high = 10000.to_bigint().unwrap();
-    let b = rng.gen_bigint_range(&amp;low, &amp;high);
-    
-    // Probably an even larger number.
-    println!(&quot;{}&quot;, a * b);
+use num::bigint::{ToBigInt, RandBigInt};
+
+let mut rng = rand::thread_rng();
+let a = rng.gen_bigint(1000);
+
+let low = -10000.to_bigint().unwrap();
+let high = 10000.to_bigint().unwrap();
+let b = rng.gen_bigint_range(&amp;low, &amp;high);
+
+// Probably an even larger number.
+println!(&quot;{}&quot;, a * b);
 }</span><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rand</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>num</span>;
 <span class='kw'>use</span> <span class='ident'>num</span>::<span class='ident'>bigint</span>::{<span class='ident'>ToBigInt</span>, <span class='ident'>RandBigInt</span>};
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>rand</span>;
 
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>rand</span>::<span class='ident'>thread_rng</span>();
 <span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='ident'>rng</span>.<span class='ident'>gen_bigint</span>(<span class='number'>1000</span>);

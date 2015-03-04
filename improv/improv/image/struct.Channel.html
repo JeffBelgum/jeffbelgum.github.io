@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Channel` struct in crate `improv`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Channel">
+
+    <title>improv::image::Channel - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='../index.html'>improv</a>::<wbr><a href='index.html'>image</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Bounds.html' title='A rectangular bounding box with an x and y origin, and a width and height.'>Bounds</a><a class='struct current' href='struct.Channel.html' title=''>Channel</a><a class='struct ' href='struct.Image.html' title='The base image struct.'>Image</a><a class='struct ' href='struct.ImageView.html' title=''>ImageView</a><a class='struct ' href='struct.Point.html' title='A pixel location in an `Image` or `Channel`'>Point</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.ImageLayout.html' title=''>ImageLayout</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.PixelComponent.html' title=''>PixelComponent</a><a class='trait ' href='trait.White.html' title=''>White</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>improv</a>::<wbr><a href='index.html'>image</a>::<wbr><a class='struct' href=''>Channel</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-991' href='../../src/improv/image/channel.rs.html#16-20'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Channel&lt;P&gt; {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;P: <a class='trait' href='../../improv/image/trait.PixelComponent.html' title='improv::image::PixelComponent'>PixelComponent</a>&gt; <a class='struct' href='../../improv/image/struct.Channel.html' title='improv::image::Channel'>Channel</a>&lt;P&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.new' class='fnname'>new</a>(name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, bounds: <a class='struct' href='../../improv/image/struct.Bounds.html' title='improv::image::Bounds'>Bounds</a>) -&gt; <a class='struct' href='../../improv/image/struct.Channel.html' title='improv::image::Channel'>Channel</a>&lt;P&gt;</code></h4>
+<div class='docblock'><p>Construct a new channel with values of <code>0</code></p>
+</div><h4 id='method.from_vec' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.from_vec' class='fnname'>from_vec</a>(name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, bounds: <a class='struct' href='../../improv/image/struct.Bounds.html' title='improv::image::Bounds'>Bounds</a>, buf: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;P&gt;) -&gt; <a class='struct' href='../../improv/image/struct.Channel.html' title='improv::image::Channel'>Channel</a>&lt;P&gt;</code></h4>
+<div class='docblock'><p>Construct a new channel from a buffer of <code>PixelComponents</code>.</p>
+</div><h4 id='method.name' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.name' class='fnname'>name</a>(&amp;self) -&gt; &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></h4>
+<h4 id='method.bounds' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.bounds' class='fnname'>bounds</a>(&amp;self) -&gt; <a class='struct' href='../../improv/image/struct.Bounds.html' title='improv::image::Bounds'>Bounds</a></code></h4>
+<h4 id='method.pixels' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.pixels' class='fnname'>pixels</a>(&amp;self) -&gt; PixelIter&lt;P&gt;</code></h4>
+<h4 id='method.rows' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.rows' class='fnname'>rows</a>(&amp;self) -&gt; RowIter&lt;P&gt;</code></h4>
+<h4 id='method.set_pixel' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.set_pixel' class='fnname'>set_pixel</a>(&amp;mut self, point: <a class='struct' href='../../improv/image/struct.Point.html' title='improv::image::Point'>Point</a>, value: P)</code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl&lt;P&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Index.html' title='core::ops::Index'>Index</a>&lt;<a class='struct' href='../../improv/image/struct.Point.html' title='improv::image::Point'>Point</a>&gt; for <a class='struct' href='../../improv/image/struct.Channel.html' title='improv::image::Channel'>Channel</a>&lt;P&gt;</code></h3><div class='impl-items'><h4 id='assoc_type.Output' class='type'><a class='stability Unmarked' title='No stability level'></a><code>type Output = P</code></h4>
+<h4 id='method.index' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.index' class='fnname'>index</a>(&amp;self, index: &amp;<a class='struct' href='../../improv/image/struct.Point.html' title='improv::image::Point'>Point</a>) -&gt; &amp;P</code></h4>
+</div><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl&lt;P&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Index.html' title='core::ops::Index'>Index</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</a>&gt; for <a class='struct' href='../../improv/image/struct.Channel.html' title='improv::image::Channel'>Channel</a>&lt;P&gt;</code></h3><div class='impl-items'><h4 id='assoc_type.Output' class='type'><a class='stability Unmarked' title='No stability level'></a><code>type Output = P</code></h4>
+<h4 id='method.index' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='#method.index' class='fnname'>index</a>(&amp;self, index: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</a>) -&gt; &amp;P</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "improv";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script async src="../../search-index.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/registry/src/github.com-1ecc6299db9ec823/num-0.1.12/src/bigint.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/git/checkouts/num-562c9ea1486aecc2/master/src/bigint.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>bigint.rs.html -- source</title>
@@ -3474,6 +3474,9 @@
 <span id="3432">3432</span>
 <span id="3433">3433</span>
 <span id="3434">3434</span>
+<span id="3435">3435</span>
+<span id="3436">3436</span>
+<span id="3437">3437</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2013-2014 The Rust Project Developers. See the COPYRIGHT</span>
 <span class='comment'>// file at the top-level directory of this distribution and at</span>
@@ -3518,9 +3521,10 @@
 <span class='doccomment'>//! It&#39;s easy to generate large random numbers:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! # #![allow(unstable)]</span>
+<span class='doccomment'>//! extern crate rand;</span>
+<span class='doccomment'>//! extern crate num;</span>
+<span class='doccomment'>//! # fn main() {</span>
 <span class='doccomment'>//! use num::bigint::{ToBigInt, RandBigInt};</span>
-<span class='doccomment'>//! use std::rand;</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! let mut rng = rand::thread_rng();</span>
 <span class='doccomment'>//! let a = rng.gen_bigint(1000);</span>
@@ -3531,6 +3535,7 @@
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! // Probably an even larger number.</span>
 <span class='doccomment'>//! println!(&quot;{}&quot;, a * b);</span>
+<span class='doccomment'>//! # }</span>
 <span class='doccomment'>//! ```</span>
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='string'>&quot;rustc-serialize&quot;</span> <span class='kw'>as</span> <span class='ident'>rustc_serialize</span>;
@@ -3544,12 +3549,12 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>repeat</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::{<span class='ident'>Int</span>, <span class='ident'>ToPrimitive</span>, <span class='ident'>FromPrimitive</span>, <span class='ident'>FromStrRadix</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{<span class='ident'>Add</span>, <span class='ident'>BitAnd</span>, <span class='ident'>BitOr</span>, <span class='ident'>BitXor</span>, <span class='ident'>Div</span>, <span class='ident'>Mul</span>, <span class='ident'>Neg</span>, <span class='ident'>Rem</span>, <span class='ident'>Shl</span>, <span class='ident'>Shr</span>, <span class='ident'>Sub</span>};
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>rand</span>::<span class='ident'>Rng</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>::{<span class='self'>self</span>, <span class='ident'>FromStr</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::{<span class='ident'>cmp</span>, <span class='ident'>fmt</span>, <span class='ident'>hash</span>, <span class='ident'>mem</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>::{<span class='self'>self</span>, <span class='ident'>Less</span>, <span class='ident'>Greater</span>, <span class='ident'>Equal</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::{<span class='ident'>i64</span>, <span class='ident'>u64</span>};
 
+<span class='kw'>use</span> <span class='ident'>rand</span>::<span class='ident'>Rng</span>;
 <span class='kw'>use</span> <span class='ident'>rustc_serialize</span>::<span class='ident'>hex</span>::<span class='ident'>ToHex</span>;
 
 <span class='kw'>use</span> {<span class='ident'>Num</span>, <span class='ident'>Unsigned</span>, <span class='ident'>CheckedAdd</span>, <span class='ident'>CheckedSub</span>, <span class='ident'>CheckedMul</span>, <span class='ident'>CheckedDiv</span>, <span class='ident'>Signed</span>, <span class='ident'>Zero</span>, <span class='ident'>One</span>};
@@ -3638,8 +3643,8 @@
     <span class='kw'>fn</span> <span class='ident'>default</span>() <span class='op'>-&gt;</span> <span class='ident'>BigUint</span> { <span class='ident'>Zero</span>::<span class='ident'>zero</span>() }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>hash</span>::<span class='ident'>Hasher</span> <span class='op'>+</span> <span class='ident'>hash</span>::<span class='ident'>Writer</span><span class='op'>&gt;</span> <span class='ident'>hash</span>::<span class='ident'>Hash</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>BigUint</span> {
-    <span class='kw'>fn</span> <span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>state</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>S</span>) {
+<span class='kw'>impl</span> <span class='ident'>hash</span>::<span class='ident'>Hash</span> <span class='kw'>for</span> <span class='ident'>BigUint</span> {
+    <span class='kw'>fn</span> <span class='ident'>hash</span><span class='op'>&lt;</span><span class='ident'>H</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>state</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>H</span>) <span class='kw'>where</span> <span class='ident'>H</span>: <span class='ident'>hash</span>::<span class='ident'>Hasher</span> {
         <span class='comment'>// hash 0 in case it&#39;s all 0&#39;s</span>
         <span class='number'>0u32</span>.<span class='ident'>hash</span>(<span class='ident'>state</span>);
 
@@ -3841,7 +3846,7 @@
         <span class='kw'>let</span> <span class='ident'>zeros</span> <span class='op'>=</span> <span class='ident'>ZERO_VEC</span>.<span class='ident'>iter</span>().<span class='ident'>cycle</span>();
         <span class='kw'>let</span> (<span class='ident'>a</span>, <span class='ident'>b</span>) <span class='op'>=</span> (<span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>iter</span>().<span class='ident'>chain</span>(<span class='ident'>zeros</span>.<span class='ident'>clone</span>()), <span class='ident'>other</span>.<span class='ident'>data</span>.<span class='ident'>iter</span>().<span class='ident'>chain</span>(<span class='ident'>zeros</span>));
 
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>borrow</span> <span class='op'>=</span> <span class='number'>0is</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>borrow</span> <span class='op'>=</span> <span class='number'>0isize</span>;
         <span class='kw'>let</span> <span class='ident'>diff</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BigDigit</span><span class='op'>&gt;</span> <span class='op'>=</span>  <span class='ident'>a</span>.<span class='ident'>take</span>(<span class='ident'>new_len</span>).<span class='ident'>zip</span>(<span class='ident'>b</span>).<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>ai</span>, <span class='ident'>bi</span>)<span class='op'>|</span> {
             <span class='kw'>let</span> (<span class='ident'>hi</span>, <span class='ident'>lo</span>) <span class='op'>=</span> <span class='ident'>big_digit</span>::<span class='ident'>from_doublebigdigit</span>(
                 <span class='ident'>big_digit</span>::<span class='ident'>BASE</span>
@@ -4240,24 +4245,24 @@
     }
 }
 
-<span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>isize</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>);
+<span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>isize</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>i8</span>,   <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i8</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>i16</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i16</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>i32</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i32</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>i64</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i64</span>);
-<span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>usize</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>);
+<span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>usize</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>u8</span>,   <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u8</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>u16</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u16</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>u32</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u32</span>);
 <span class='macro'>impl_to_biguint</span><span class='macro'>!</span>(<span class='ident'>u64</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u64</span>);
 
-<span class='kw'>fn</span> <span class='ident'>to_str_radix</span>(<span class='ident'>me</span>: <span class='kw-2'>&amp;</span><span class='ident'>BigUint</span>, <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
+<span class='kw'>fn</span> <span class='ident'>to_str_radix</span>(<span class='ident'>me</span>: <span class='kw-2'>&amp;</span><span class='ident'>BigUint</span>, <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
     <span class='macro'>assert</span><span class='macro'>!</span>(<span class='number'>1</span> <span class='op'>&lt;</span> <span class='ident'>radix</span> <span class='op'>&amp;&amp;</span> <span class='ident'>radix</span> <span class='op'>&lt;=</span> <span class='number'>16</span>, <span class='string'>&quot;The radix must be within (1, 16]&quot;</span>);
     <span class='kw'>let</span> (<span class='ident'>base</span>, <span class='ident'>max_len</span>) <span class='op'>=</span> <span class='ident'>get_radix_base</span>(<span class='ident'>radix</span>);
     <span class='kw'>if</span> <span class='ident'>base</span> <span class='op'>==</span> <span class='ident'>big_digit</span>::<span class='ident'>BASE</span> {
-        <span class='kw'>return</span> <span class='ident'>fill_concat</span>(<span class='kw-2'>&amp;</span><span class='ident'>me</span>.<span class='ident'>data</span>[], <span class='ident'>radix</span>, <span class='ident'>max_len</span>)
+        <span class='kw'>return</span> <span class='ident'>fill_concat</span>(<span class='kw-2'>&amp;</span><span class='ident'>me</span>.<span class='ident'>data</span>, <span class='ident'>radix</span>, <span class='ident'>max_len</span>)
     }
-    <span class='kw'>return</span> <span class='ident'>fill_concat</span>(<span class='kw-2'>&amp;</span><span class='ident'>convert_base</span>(<span class='ident'>me</span>, <span class='ident'>base</span>)[], <span class='ident'>radix</span>, <span class='ident'>max_len</span>);
+    <span class='kw'>return</span> <span class='ident'>fill_concat</span>(<span class='kw-2'>&amp;</span><span class='ident'>convert_base</span>(<span class='ident'>me</span>, <span class='ident'>base</span>), <span class='ident'>radix</span>, <span class='ident'>max_len</span>);
 
     <span class='kw'>fn</span> <span class='ident'>convert_base</span>(<span class='ident'>n</span>: <span class='kw-2'>&amp;</span><span class='ident'>BigUint</span>, <span class='ident'>base</span>: <span class='ident'>DoubleBigDigit</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>BigDigit</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>divider</span>    <span class='op'>=</span> <span class='ident'>base</span>.<span class='ident'>to_biguint</span>().<span class='ident'>unwrap</span>();
@@ -4265,16 +4270,16 @@
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>m</span>      <span class='op'>=</span> <span class='ident'>n</span>.<span class='ident'>clone</span>();
         <span class='kw'>while</span> <span class='ident'>m</span> <span class='op'>&gt;=</span> <span class='ident'>divider</span> {
             <span class='kw'>let</span> (<span class='ident'>d</span>, <span class='ident'>m0</span>) <span class='op'>=</span> <span class='ident'>m</span>.<span class='ident'>div_mod_floor</span>(<span class='kw-2'>&amp;</span><span class='ident'>divider</span>);
-            <span class='ident'>result</span>.<span class='ident'>push</span>(<span class='ident'>m0</span>.<span class='ident'>to_uint</span>().<span class='ident'>unwrap</span>() <span class='kw'>as</span> <span class='ident'>BigDigit</span>);
+            <span class='ident'>result</span>.<span class='ident'>push</span>(<span class='ident'>m0</span>.<span class='ident'>to_usize</span>().<span class='ident'>unwrap</span>() <span class='kw'>as</span> <span class='ident'>BigDigit</span>);
             <span class='ident'>m</span> <span class='op'>=</span> <span class='ident'>d</span>;
         }
         <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>m</span>.<span class='ident'>is_zero</span>() {
-            <span class='ident'>result</span>.<span class='ident'>push</span>(<span class='ident'>m</span>.<span class='ident'>to_uint</span>().<span class='ident'>unwrap</span>() <span class='kw'>as</span> <span class='ident'>BigDigit</span>);
+            <span class='ident'>result</span>.<span class='ident'>push</span>(<span class='ident'>m</span>.<span class='ident'>to_usize</span>().<span class='ident'>unwrap</span>() <span class='kw'>as</span> <span class='ident'>BigDigit</span>);
         }
         <span class='kw'>return</span> <span class='ident'>result</span>;
     }
 
-    <span class='kw'>fn</span> <span class='ident'>fill_concat</span>(<span class='ident'>v</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>BigDigit</span>], <span class='ident'>radix</span>: <span class='ident'>usize</span>, <span class='ident'>l</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
+    <span class='kw'>fn</span> <span class='ident'>fill_concat</span>(<span class='ident'>v</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>BigDigit</span>], <span class='ident'>radix</span>: <span class='ident'>u32</span>, <span class='ident'>l</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
         <span class='kw'>if</span> <span class='ident'>v</span>.<span class='ident'>is_empty</span>() {
             <span class='kw'>return</span> <span class='string'>&quot;0&quot;</span>.<span class='ident'>to_string</span>()
         }
@@ -4282,13 +4287,13 @@
         <span class='kw'>for</span> <span class='ident'>n</span> <span class='kw'>in</span> <span class='ident'>v</span>.<span class='ident'>iter</span>().<span class='ident'>rev</span>() {
             <span class='kw'>let</span> <span class='ident'>ss</span> <span class='op'>=</span> <span class='ident'>fmt</span>::<span class='ident'>radix</span>(<span class='op'>*</span><span class='ident'>n</span> <span class='kw'>as</span> <span class='ident'>usize</span>, <span class='ident'>radix</span> <span class='kw'>as</span> <span class='ident'>u8</span>).<span class='ident'>to_string</span>();
             <span class='ident'>s</span>.<span class='ident'>extend</span>(<span class='ident'>repeat</span>(<span class='string'>&quot;0&quot;</span>).<span class='ident'>take</span>(<span class='ident'>l</span> <span class='op'>-</span> <span class='ident'>ss</span>.<span class='ident'>len</span>()));
-            <span class='ident'>s</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>ss</span>[]);
+            <span class='ident'>s</span>.<span class='ident'>push_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>ss</span>);
         }
         <span class='ident'>s</span>.<span class='ident'>trim_left_matches</span>(<span class='string'>&#39;0&#39;</span>).<span class='ident'>to_string</span>()
     }
 }
 
-<span class='kw'>fn</span> <span class='ident'>to_str_radix_signed</span>(<span class='ident'>me</span>: <span class='kw-2'>&amp;</span><span class='ident'>BigInt</span>, <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
+<span class='kw'>fn</span> <span class='ident'>to_str_radix_signed</span>(<span class='ident'>me</span>: <span class='kw-2'>&amp;</span><span class='ident'>BigInt</span>, <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
     <span class='kw'>match</span> <span class='ident'>me</span>.<span class='ident'>sign</span> {
         <span class='ident'>Plus</span> <span class='op'>=&gt;</span> <span class='ident'>to_str_radix</span>(<span class='kw-2'>&amp;</span><span class='ident'>me</span>.<span class='ident'>data</span>, <span class='ident'>radix</span>),
         <span class='ident'>NoSign</span> <span class='op'>=&gt;</span> <span class='string'>&quot;0&quot;</span>.<span class='ident'>to_string</span>(),
@@ -4301,7 +4306,7 @@
 
     <span class='doccomment'>/// Creates and initializes a `BigUint`.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>BigUint</span>, <span class='ident'>ParseBigIntError</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>BigUint</span>, <span class='ident'>ParseBigIntError</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> (<span class='ident'>base</span>, <span class='ident'>unit_len</span>) <span class='op'>=</span> <span class='ident'>get_radix_base</span>(<span class='ident'>radix</span>);
         <span class='kw'>let</span> <span class='ident'>base_num</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>base</span>.<span class='ident'>to_biguint</span>() {
             <span class='prelude-val'>Some</span>(<span class='ident'>base_num</span>) <span class='op'>=&gt;</span> <span class='ident'>base_num</span>,
@@ -4314,7 +4319,7 @@
         <span class='kw'>loop</span> {
             <span class='kw'>let</span> <span class='ident'>start</span> <span class='op'>=</span> <span class='ident'>cmp</span>::<span class='ident'>max</span>(<span class='ident'>end</span>, <span class='ident'>unit_len</span>) <span class='op'>-</span> <span class='ident'>unit_len</span>;
             <span class='kw'>let</span> <span class='ident'>d</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>FromStrRadix</span>::<span class='ident'>from_str_radix</span>(<span class='kw-2'>&amp;</span><span class='ident'>s</span>[<span class='ident'>start</span> .. <span class='ident'>end</span>], <span class='ident'>radix</span>));
-            <span class='kw'>let</span> <span class='ident'>d</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigUint</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>d</span>);
+            <span class='kw'>let</span> <span class='ident'>d</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigUint</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>d</span>);
             <span class='kw'>match</span> <span class='ident'>d</span> {
                 <span class='prelude-val'>Some</span>(<span class='ident'>d</span>) <span class='op'>=&gt;</span> {
                     <span class='comment'>// FIXME(#5992): assignment operator overloads</span>
@@ -4435,7 +4440,7 @@
     <span class='doccomment'>/// assert_eq!(BigUint::parse_bytes(&quot;G&quot;.as_bytes(), 16), None);</span>
     <span class='doccomment'>/// ```</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>parse_bytes</span>(<span class='ident'>buf</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>], <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigUint</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>parse_bytes</span>(<span class='ident'>buf</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>], <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigUint</span><span class='op'>&gt;</span> {
         <span class='ident'>str</span>::<span class='ident'>from_utf8</span>(<span class='ident'>buf</span>).<span class='ident'>ok</span>().<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>s</span><span class='op'>|</span> <span class='ident'>FromStrRadix</span>::<span class='ident'>from_str_radix</span>(<span class='ident'>s</span>, <span class='ident'>radix</span>).<span class='ident'>ok</span>())
     }
 
@@ -4444,7 +4449,7 @@
         <span class='kw'>if</span> <span class='ident'>n_unit</span> <span class='op'>==</span> <span class='number'>0</span> <span class='op'>||</span> <span class='self'>self</span>.<span class='ident'>is_zero</span>() { <span class='kw'>return</span> (<span class='op'>*</span><span class='self'>self</span>).<span class='ident'>clone</span>(); }
 
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='ident'>repeat</span>(<span class='ident'>ZERO_BIG_DIGIT</span>).<span class='ident'>take</span>(<span class='ident'>n_unit</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
-        <span class='ident'>v</span>.<span class='ident'>push_all</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>data</span>[]);
+        <span class='ident'>v</span>.<span class='ident'>push_all</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>data</span>);
         <span class='ident'>BigUint</span>::<span class='ident'>new</span>(<span class='ident'>v</span>)
     }
 
@@ -4489,13 +4494,13 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>bits</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_zero</span>() { <span class='kw'>return</span> <span class='number'>0</span>; }
         <span class='kw'>let</span> <span class='ident'>zeros</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>last</span>().<span class='ident'>unwrap</span>().<span class='ident'>leading_zeros</span>();
-        <span class='kw'>return</span> <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>()<span class='op'>*</span><span class='ident'>big_digit</span>::<span class='ident'>BITS</span> <span class='op'>-</span> <span class='ident'>zeros</span>;
+        <span class='kw'>return</span> <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>len</span>()<span class='op'>*</span><span class='ident'>big_digit</span>::<span class='ident'>BITS</span> <span class='op'>-</span> <span class='ident'>zeros</span> <span class='kw'>as</span> <span class='ident'>usize</span>;
     }
 }
 
 <span class='comment'>// `DoubleBigDigit` size dependent</span>
 <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-<span class='kw'>fn</span> <span class='ident'>get_radix_base</span>(<span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> (<span class='ident'>DoubleBigDigit</span>, <span class='ident'>usize</span>) {
+<span class='kw'>fn</span> <span class='ident'>get_radix_base</span>(<span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> (<span class='ident'>DoubleBigDigit</span>, <span class='ident'>usize</span>) {
     <span class='kw'>match</span> <span class='ident'>radix</span> {
         <span class='number'>2</span>  <span class='op'>=&gt;</span> (<span class='number'>4294967296</span>, <span class='number'>32</span>),
         <span class='number'>3</span>  <span class='op'>=&gt;</span> (<span class='number'>3486784401</span>, <span class='number'>20</span>),
@@ -4582,8 +4587,8 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>S</span>: <span class='ident'>hash</span>::<span class='ident'>Hasher</span> <span class='op'>+</span> <span class='ident'>hash</span>::<span class='ident'>Writer</span><span class='op'>&gt;</span> <span class='ident'>hash</span>::<span class='ident'>Hash</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>BigInt</span> {
-    <span class='kw'>fn</span> <span class='ident'>hash</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>state</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>S</span>) {
+<span class='kw'>impl</span> <span class='ident'>hash</span>::<span class='ident'>Hash</span> <span class='kw'>for</span> <span class='ident'>BigInt</span> {
+    <span class='kw'>fn</span> <span class='ident'>hash</span><span class='op'>&lt;</span><span class='ident'>H</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>state</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>H</span>) <span class='kw'>where</span> <span class='ident'>H</span>: <span class='ident'>hash</span>::<span class='ident'>Hasher</span> {
         (<span class='self'>self</span>.<span class='ident'>sign</span> <span class='op'>==</span> <span class='ident'>Plus</span>).<span class='ident'>hash</span>(<span class='ident'>state</span>);
         <span class='self'>self</span>.<span class='ident'>data</span>.<span class='ident'>hash</span>(<span class='ident'>state</span>);
     }
@@ -4991,12 +4996,12 @@
     }
 }
 
-<span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>isize</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>);
+<span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>isize</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>i8</span>,   <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i8</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>i16</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i16</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>i32</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i32</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>i64</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_i64</span>);
-<span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>usize</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>);
+<span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>usize</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>u8</span>,   <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u8</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>u16</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u16</span>);
 <span class='macro'>impl_to_bigint</span><span class='macro'>!</span>(<span class='ident'>u32</span>,  <span class='ident'>FromPrimitive</span>::<span class='ident'>from_u32</span>);
@@ -5007,7 +5012,7 @@
 
     <span class='doccomment'>/// Creates and initializes a BigInt.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>BigInt</span>, <span class='ident'>ParseBigIntError</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>BigInt</span>, <span class='ident'>ParseBigIntError</span><span class='op'>&gt;</span> {
         <span class='kw'>if</span> <span class='ident'>s</span>.<span class='ident'>is_empty</span>() { <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ParseBigIntError</span>::<span class='ident'>Other</span>); }
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sign</span>  <span class='op'>=</span> <span class='ident'>Plus</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>start</span> <span class='op'>=</span> <span class='number'>0</span>;
@@ -5186,7 +5191,7 @@
     <span class='doccomment'>/// assert_eq!(BigInt::parse_bytes(&quot;G&quot;.as_bytes(), 16), None);</span>
     <span class='doccomment'>/// ```</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>parse_bytes</span>(<span class='ident'>buf</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>], <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigInt</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>parse_bytes</span>(<span class='ident'>buf</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>], <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>BigInt</span><span class='op'>&gt;</span> {
         <span class='ident'>str</span>::<span class='ident'>from_utf8</span>(<span class='ident'>buf</span>).<span class='ident'>ok</span>().<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>s</span><span class='op'>|</span> <span class='ident'>FromStrRadix</span>::<span class='ident'>from_str_radix</span>(<span class='ident'>s</span>, <span class='ident'>radix</span>).<span class='ident'>ok</span>())
     }
 
@@ -5262,10 +5267,10 @@
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>repeat</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>FromStrRadix</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::{<span class='ident'>ToPrimitive</span>, <span class='ident'>FromPrimitive</span>};
-    <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>rand</span>::<span class='ident'>thread_rng</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>::<span class='ident'>FromStr</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>u64</span>;
 
+    <span class='kw'>use</span> <span class='ident'>rand</span>::<span class='ident'>thread_rng</span>;
     <span class='kw'>use</span> {<span class='ident'>Zero</span>, <span class='ident'>One</span>, <span class='ident'>CheckedAdd</span>, <span class='ident'>CheckedSub</span>, <span class='ident'>CheckedMul</span>, <span class='ident'>CheckedDiv</span>};
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -5949,9 +5954,9 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_gcd</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>a</span>: <span class='ident'>usize</span>, <span class='ident'>b</span>: <span class='ident'>usize</span>, <span class='ident'>c</span>: <span class='ident'>usize</span>) {
-            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
 
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>big_a</span>.<span class='ident'>gcd</span>(<span class='kw-2'>&amp;</span><span class='ident'>big_b</span>), <span class='ident'>big_c</span>);
         }
@@ -5966,9 +5971,9 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_lcm</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>a</span>: <span class='ident'>usize</span>, <span class='ident'>b</span>: <span class='ident'>usize</span>, <span class='ident'>c</span>: <span class='ident'>usize</span>) {
-            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
 
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>big_a</span>.<span class='ident'>lcm</span>(<span class='kw-2'>&amp;</span><span class='ident'>big_b</span>), <span class='ident'>big_c</span>);
         }
@@ -5997,7 +6002,7 @@
         <span class='macro'>assert</span><span class='macro'>!</span>(((<span class='kw-2'>&amp;</span><span class='ident'>one</span> <span class='op'>&lt;&lt;</span> <span class='number'>64</span>) <span class='op'>+</span> <span class='ident'>one</span>).<span class='ident'>is_odd</span>());
     }
 
-    <span class='kw'>fn</span> <span class='ident'>to_str_pairs</span>() <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>BigUint</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>usize</span>, <span class='ident'>String</span>)<span class='op'>&gt;</span>)<span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>to_str_pairs</span>() <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>BigUint</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span>(<span class='ident'>u32</span>, <span class='ident'>String</span>)<span class='op'>&gt;</span>)<span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>bits</span> <span class='op'>=</span> <span class='ident'>big_digit</span>::<span class='ident'>BITS</span>;
         <span class='macro'>vec</span><span class='macro'>!</span>(( <span class='ident'>Zero</span>::<span class='ident'>zero</span>(), <span class='macro'>vec</span><span class='macro'>!</span>(
             (<span class='number'>2</span>, <span class='string'>&quot;0&quot;</span>.<span class='ident'>to_string</span>()), (<span class='number'>3</span>, <span class='string'>&quot;0&quot;</span>.<span class='ident'>to_string</span>())
@@ -6095,8 +6100,8 @@
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>One</span>::<span class='ident'>one</span>();
             <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>2</span>, <span class='ident'>n</span> <span class='op'>+</span> <span class='number'>1</span>) {
                 <span class='comment'>// FIXME(#5992): assignment operator overloads</span>
-                <span class='comment'>// f *= FromPrimitive::from_uint(i);</span>
-                <span class='kw'>let</span> <span class='ident'>bu</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>i</span>).<span class='ident'>unwrap</span>();
+                <span class='comment'>// f *= FromPrimitive::from_usize(i);</span>
+                <span class='kw'>let</span> <span class='ident'>bu</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>i</span>).<span class='ident'>unwrap</span>();
                 <span class='ident'>f</span> <span class='op'>=</span> <span class='ident'>f</span> <span class='op'>*</span> <span class='ident'>bu</span>;
             }
             <span class='kw'>return</span> <span class='ident'>f</span>;
@@ -6119,11 +6124,11 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_bits</span>() {
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>BigUint</span>::<span class='ident'>new</span>(<span class='macro'>vec</span><span class='macro'>!</span>(<span class='number'>0</span>,<span class='number'>0</span>,<span class='number'>0</span>,<span class='number'>0</span>)).<span class='ident'>bits</span>(), <span class='number'>0</span>);
-        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>0</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>0</span>).<span class='ident'>unwrap</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>n</span>.<span class='ident'>bits</span>(), <span class='number'>0</span>);
-        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>1</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>1</span>).<span class='ident'>unwrap</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>n</span>.<span class='ident'>bits</span>(), <span class='number'>1</span>);
-        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>3</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>3</span>).<span class='ident'>unwrap</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>n</span>.<span class='ident'>bits</span>(), <span class='number'>2</span>);
         <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromStrRadix</span>::<span class='ident'>from_str_radix</span>(<span class='string'>&quot;4000000000&quot;</span>, <span class='number'>16</span>).<span class='ident'>unwrap</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>n</span>.<span class='ident'>bits</span>(), <span class='number'>39</span>);
@@ -6143,13 +6148,13 @@
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>thread_rng</span>();
 
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>0</span>, <span class='number'>10</span>) {
-            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>rng</span>.<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>(),
-                                            <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>237</span>).<span class='ident'>unwrap</span>()),
-                       <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>());
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>rng</span>.<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>(),
+                                            <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>237</span>).<span class='ident'>unwrap</span>()),
+                       <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>());
         }
 
-        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>2352</span>).<span class='ident'>unwrap</span>();
-        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>3513</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>2352</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>3513</span>).<span class='ident'>unwrap</span>();
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>0</span>, <span class='number'>1000</span>) {
             <span class='kw'>let</span> <span class='ident'>n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>rng</span>.<span class='ident'>gen_biguint_below</span>(<span class='kw-2'>&amp;</span><span class='ident'>u</span>);
             <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>n</span> <span class='op'>&lt;</span> <span class='ident'>u</span>);
@@ -6163,16 +6168,16 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='attribute'>#[<span class='ident'>should_fail</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_zero_rand_range</span>() {
-        <span class='ident'>thread_rng</span>().<span class='ident'>gen_biguint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>(),
-                                     <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>());
+        <span class='ident'>thread_rng</span>().<span class='ident'>gen_biguint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>(),
+                                     <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='attribute'>#[<span class='ident'>should_fail</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_negative_rand_range</span>() {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>thread_rng</span>();
-        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>2352</span>).<span class='ident'>unwrap</span>();
-        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>3513</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>2352</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>3513</span>).<span class='ident'>unwrap</span>();
         <span class='comment'>// Switching u and l should fail:</span>
         <span class='kw'>let</span> <span class='ident'>_n</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>rng</span>.<span class='ident'>gen_biguint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>u</span>, <span class='kw-2'>&amp;</span><span class='ident'>l</span>);
     }
@@ -6190,17 +6195,18 @@
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>repeat</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>FromStrRadix</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::{<span class='ident'>ToPrimitive</span>, <span class='ident'>FromPrimitive</span>};
-    <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>rand</span>::<span class='ident'>thread_rng</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>u64</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{<span class='ident'>Neg</span>};
+
+    <span class='kw'>use</span> <span class='ident'>rand</span>::<span class='ident'>thread_rng</span>;
 
     <span class='kw'>use</span> {<span class='ident'>Zero</span>, <span class='ident'>One</span>, <span class='ident'>Signed</span>};
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_from_biguint</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>inp_s</span>: <span class='ident'>Sign</span>, <span class='ident'>inp_n</span>: <span class='ident'>usize</span>, <span class='ident'>ans_s</span>: <span class='ident'>Sign</span>, <span class='ident'>ans_n</span>: <span class='ident'>usize</span>) {
-            <span class='kw'>let</span> <span class='ident'>inp</span> <span class='op'>=</span> <span class='ident'>BigInt</span>::<span class='ident'>from_biguint</span>(<span class='ident'>inp_s</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>inp_n</span>).<span class='ident'>unwrap</span>());
-            <span class='kw'>let</span> <span class='ident'>ans</span> <span class='op'>=</span> <span class='ident'>BigInt</span> { <span class='ident'>sign</span>: <span class='ident'>ans_s</span>, <span class='ident'>data</span>: <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>ans_n</span>).<span class='ident'>unwrap</span>()};
+            <span class='kw'>let</span> <span class='ident'>inp</span> <span class='op'>=</span> <span class='ident'>BigInt</span>::<span class='ident'>from_biguint</span>(<span class='ident'>inp_s</span>, <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>inp_n</span>).<span class='ident'>unwrap</span>());
+            <span class='kw'>let</span> <span class='ident'>ans</span> <span class='op'>=</span> <span class='ident'>BigInt</span> { <span class='ident'>sign</span>: <span class='ident'>ans_s</span>, <span class='ident'>data</span>: <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>ans_n</span>).<span class='ident'>unwrap</span>()};
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>inp</span>, <span class='ident'>ans</span>);
         }
         <span class='ident'>check</span>(<span class='ident'>Plus</span>, <span class='number'>1</span>, <span class='ident'>Plus</span>, <span class='number'>1</span>);
@@ -6705,9 +6711,9 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_gcd</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>a</span>: <span class='ident'>isize</span>, <span class='ident'>b</span>: <span class='ident'>isize</span>, <span class='ident'>c</span>: <span class='ident'>isize</span>) {
-            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
 
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>big_a</span>.<span class='ident'>gcd</span>(<span class='kw-2'>&amp;</span><span class='ident'>big_b</span>), <span class='ident'>big_c</span>);
         }
@@ -6725,9 +6731,9 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_lcm</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>a</span>: <span class='ident'>isize</span>, <span class='ident'>b</span>: <span class='ident'>isize</span>, <span class='ident'>c</span>: <span class='ident'>isize</span>) {
-            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
-            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_a</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>a</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_b</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>b</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>big_c</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>c</span>).<span class='ident'>unwrap</span>();
 
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>big_a</span>.<span class='ident'>lcm</span>(<span class='kw-2'>&amp;</span><span class='ident'>big_b</span>), <span class='ident'>big_c</span>);
         }
@@ -6754,7 +6760,7 @@
         <span class='kw'>let</span> <span class='ident'>zero</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>Zero</span>::<span class='ident'>zero</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>one</span>.<span class='ident'>abs_sub</span>(<span class='kw-2'>&amp;</span><span class='ident'>zero</span>), <span class='ident'>one</span>);
         <span class='kw'>let</span> <span class='ident'>one</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>One</span>::<span class='ident'>one</span>();
-        <span class='kw'>let</span> <span class='ident'>two</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='number'>2</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>two</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='number'>2</span>).<span class='ident'>unwrap</span>();
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>one</span>.<span class='ident'>abs_sub</span>(<span class='kw-2'>&amp;</span><span class='op'>-</span><span class='kw-2'>&amp;</span><span class='ident'>one</span>), <span class='ident'>two</span>);
     }
 
@@ -6762,7 +6768,7 @@
     <span class='kw'>fn</span> <span class='ident'>test_from_str_radix</span>() {
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>ans</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>isize</span><span class='op'>&gt;</span>) {
             <span class='kw'>let</span> <span class='ident'>ans</span> <span class='op'>=</span> <span class='ident'>ans</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>n</span><span class='op'>|</span> {
-                <span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>n</span>).<span class='ident'>unwrap</span>();
+                <span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>n</span>).<span class='ident'>unwrap</span>();
                 <span class='ident'>x</span>
             });
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>FromStrRadix</span>::<span class='ident'>from_str_radix</span>(<span class='ident'>s</span>, <span class='number'>10</span>).<span class='ident'>ok</span>(), <span class='ident'>ans</span>);
@@ -6804,9 +6810,9 @@
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>thread_rng</span>();
 
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='ident'>range</span>(<span class='number'>0</span>, <span class='number'>10</span>) {
-            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>rng</span>.<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>(),
-                                            <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>237</span>).<span class='ident'>unwrap</span>()),
-                       <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>());
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>rng</span>.<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>(),
+                                            <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>237</span>).<span class='ident'>unwrap</span>()),
+                       <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>236</span>).<span class='ident'>unwrap</span>());
         }
 
         <span class='kw'>fn</span> <span class='ident'>check</span>(<span class='ident'>l</span>: <span class='ident'>BigInt</span>, <span class='ident'>u</span>: <span class='ident'>BigInt</span>) {
@@ -6817,8 +6823,8 @@
                 <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>n</span> <span class='op'>&lt;</span> <span class='ident'>u</span>);
             }
         }
-        <span class='kw'>let</span> <span class='ident'>l</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>2352</span>).<span class='ident'>unwrap</span>();
-        <span class='kw'>let</span> <span class='ident'>u</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>3513</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>l</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>2352</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>u</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>403469000</span> <span class='op'>+</span> <span class='number'>3513</span>).<span class='ident'>unwrap</span>();
         <span class='ident'>check</span>( <span class='ident'>l</span>.<span class='ident'>clone</span>(),  <span class='ident'>u</span>.<span class='ident'>clone</span>());
         <span class='ident'>check</span>(<span class='op'>-</span><span class='ident'>l</span>.<span class='ident'>clone</span>(),  <span class='ident'>u</span>.<span class='ident'>clone</span>());
         <span class='ident'>check</span>(<span class='op'>-</span><span class='ident'>u</span>.<span class='ident'>clone</span>(), <span class='op'>-</span><span class='ident'>l</span>.<span class='ident'>clone</span>());
@@ -6827,16 +6833,16 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='attribute'>#[<span class='ident'>should_fail</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_zero_rand_range</span>() {
-        <span class='ident'>thread_rng</span>().<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>(),
-                                    <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>());
+        <span class='ident'>thread_rng</span>().<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>(),
+                                    <span class='kw-2'>&amp;</span><span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='number'>54</span>).<span class='ident'>unwrap</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='attribute'>#[<span class='ident'>should_fail</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_negative_rand_range</span>() {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rng</span> <span class='op'>=</span> <span class='ident'>thread_rng</span>();
-        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>2352</span>).<span class='ident'>unwrap</span>();
-        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='number'>3513</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>l</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>2352</span>).<span class='ident'>unwrap</span>();
+        <span class='kw'>let</span> <span class='ident'>u</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='number'>3513</span>).<span class='ident'>unwrap</span>();
         <span class='comment'>// Switching u and l should fail:</span>
         <span class='kw'>let</span> <span class='ident'>_n</span>: <span class='ident'>BigInt</span> <span class='op'>=</span> <span class='ident'>rng</span>.<span class='ident'>gen_bigint_range</span>(<span class='kw-2'>&amp;</span><span class='ident'>u</span>, <span class='kw-2'>&amp;</span><span class='ident'>l</span>);
     }
@@ -6856,7 +6862,7 @@
     <span class='kw'>fn</span> <span class='ident'>factorial</span>(<span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>BigUint</span> {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>One</span>::<span class='ident'>one</span>();
         <span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='ident'>iter</span>::<span class='ident'>range_inclusive</span>(<span class='number'>1</span>, <span class='ident'>n</span>) {
-            <span class='kw'>let</span> <span class='ident'>bu</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_uint</span>(<span class='ident'>i</span>).<span class='ident'>unwrap</span>();
+            <span class='kw'>let</span> <span class='ident'>bu</span>: <span class='ident'>BigUint</span> <span class='op'>=</span> <span class='ident'>FromPrimitive</span>::<span class='ident'>from_usize</span>(<span class='ident'>i</span>).<span class='ident'>unwrap</span>();
             <span class='ident'>f</span> <span class='op'>=</span> <span class='ident'>f</span> <span class='op'>*</span> <span class='ident'>bu</span>;
         }
         <span class='ident'>f</span>

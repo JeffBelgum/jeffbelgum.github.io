@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/registry/src/github.com-1ecc6299db9ec823/num-0.1.12/src/rational.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/jeffbelg/.cargo/git/checkouts/num-562c9ea1486aecc2/master/src/rational.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>rational.rs.html -- source</title>
@@ -1324,7 +1324,7 @@
     <span class='kw'>type</span> <span class='prelude-val'>Err</span> <span class='op'>=</span> <span class='ident'>ParseRatioError</span>;
 
     <span class='doccomment'>/// Parses `numer/denom` where the numbers are in base `radix`.</span>
-    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Ratio</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>, <span class='ident'>ParseRatioError</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>from_str_radix</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>radix</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Ratio</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>, <span class='ident'>ParseRatioError</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>split</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>str</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>s</span>.<span class='ident'>splitn</span>(<span class='number'>1</span>, <span class='string'>&#39;/&#39;</span>).<span class='ident'>collect</span>();
         <span class='kw'>if</span> <span class='ident'>split</span>.<span class='ident'>len</span>() <span class='op'>&lt;</span> <span class='number'>2</span> {
             <span class='prelude-val'>Err</span>(<span class='ident'>ParseRatioError</span>)
@@ -1379,8 +1379,8 @@
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>to_big</span>(<span class='ident'>n</span>: <span class='ident'>Rational</span>) <span class='op'>-&gt;</span> <span class='ident'>BigRational</span> {
         <span class='ident'>Ratio</span>::<span class='ident'>new</span>(
-            <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>n</span>.<span class='ident'>numer</span>).<span class='ident'>unwrap</span>(),
-            <span class='ident'>FromPrimitive</span>::<span class='ident'>from_int</span>(<span class='ident'>n</span>.<span class='ident'>denom</span>).<span class='ident'>unwrap</span>()
+            <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>n</span>.<span class='ident'>numer</span>).<span class='ident'>unwrap</span>(),
+            <span class='ident'>FromPrimitive</span>::<span class='ident'>from_isize</span>(<span class='ident'>n</span>.<span class='ident'>denom</span>).<span class='ident'>unwrap</span>()
         )
     }
 
@@ -1642,7 +1642,7 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_to_from_str</span>() {
         <span class='kw'>fn</span> <span class='ident'>test</span>(<span class='ident'>r</span>: <span class='ident'>Rational</span>, <span class='ident'>s</span>: <span class='ident'>String</span>) {
-            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>FromStr</span>::<span class='ident'>from_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>s</span>[]), <span class='prelude-val'>Ok</span>(<span class='ident'>r</span>));
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>FromStr</span>::<span class='ident'>from_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>s</span>), <span class='prelude-val'>Ok</span>(<span class='ident'>r</span>));
             <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>r</span>.<span class='ident'>to_string</span>(), <span class='ident'>s</span>);
         }
         <span class='ident'>test</span>(<span class='ident'>_1</span>, <span class='string'>&quot;1&quot;</span>.<span class='ident'>to_string</span>());
