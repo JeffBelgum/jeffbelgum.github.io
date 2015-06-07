@@ -297,6 +297,24 @@
 <span id="255">255</span>
 <span id="256">256</span>
 <span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright (c) 2015 Jeff Belgum</span>
 <span class='comment'>//</span>
@@ -403,6 +421,17 @@
 {
     <span class='kw'>let</span> <span class='ident'>pvar</span> <span class='op'>=</span> <span class='ident'>population_variance</span>(<span class='ident'>v</span>, <span class='ident'>mu</span>);
     <span class='ident'>pvar</span>.<span class='ident'>sqrt</span>()
+}
+
+
+<span class='doccomment'>/// Standard score is a given datum&#39;s (signed) number of standard deviations above the mean.</span>
+<span class='doccomment'>/// (reference)[http://en.wikipedia.org/wiki/Standard_score]</span>
+<span class='doccomment'>/// Method returns a vector of scores for a vector of inputs. scores[n] is the score of v[n]</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>standard_scores</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>v</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>T</span>]) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Float</span> <span class='op'>+</span> <span class='ident'>FromPrimitive</span> {
+    <span class='kw'>let</span> <span class='ident'>mean</span> <span class='op'>=</span> <span class='ident'>mean</span>(<span class='kw-2'>&amp;</span><span class='ident'>v</span>);
+    <span class='kw'>let</span> <span class='ident'>standard_deviation</span> <span class='op'>=</span> <span class='ident'>standard_deviation</span>(<span class='kw-2'>&amp;</span><span class='ident'>v</span>, <span class='prelude-val'>None</span>);
+    <span class='kw'>let</span> <span class='ident'>scores</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>v</span>.<span class='ident'>iter</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>val</span><span class='op'>|</span> (<span class='op'>*</span><span class='ident'>val</span> <span class='op'>-</span> <span class='ident'>mean</span>)<span class='op'>/</span><span class='ident'>standard_deviation</span>).<span class='ident'>collect</span>();
+    <span class='kw'>return</span> <span class='ident'>scores</span>;
 }
 
 <span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
@@ -554,6 +583,13 @@
         <span class='kw'>let</span> <span class='ident'>epsilon</span> <span class='op'>=</span> <span class='number'>1e-6</span>;
         <span class='macro'>assert</span><span class='macro'>!</span>((<span class='ident'>expected</span> <span class='op'>-</span> <span class='ident'>population_standard_deviation</span>(<span class='kw-2'>&amp;</span><span class='ident'>v</span>, <span class='prelude-val'>None</span>)).<span class='ident'>abs</span>() <span class='op'>&lt;</span> <span class='ident'>epsilon</span>);
     }
+
+    <span class='attribute'>#[<span class='ident'>test</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>test_standard_scores</span>() {
+        <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0.0</span>, <span class='number'>0.25</span>, <span class='number'>0.25</span>, <span class='number'>1.25</span>, <span class='number'>1.5</span>, <span class='number'>1.75</span>, <span class='number'>2.75</span>, <span class='number'>3.25</span>];
+        <span class='kw'>let</span> <span class='ident'>expected</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='op'>-</span><span class='number'>1.150407536484354</span>, <span class='op'>-</span><span class='number'>0.941242529850835</span>, <span class='op'>-</span><span class='number'>0.941242529850835</span>, <span class='op'>-</span><span class='number'>0.10458250331675945</span>, <span class='number'>0.10458250331675945</span>, <span class='number'>0.31374750995027834</span>, <span class='number'>1.150407536484354</span>, <span class='number'>1.5687375497513918</span>];
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>expected</span> <span class='op'>==</span> <span class='ident'>standard_scores</span>(<span class='kw-2'>&amp;</span><span class='ident'>v</span>));
+    }
 }
 </pre>
 </section>
@@ -588,6 +624,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>
